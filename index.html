@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Una Invitacion Al Circo</title>
+    <meta
+      name="description"
+      content="Una invitacion romantica y animada para una noche de circo."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <section class="loader" id="loader" aria-label="Preparando funcion">
+      <canvas class="loader-spiral" id="loaderSpiral" aria-hidden="true"></canvas>
+      <div class="loader-marquee">
+        <span id="loaderNumber">Cargando</span>
+      </div>
+      <div class="loader-story" aria-live="polite">
+        <div class="beba-stage">
+          <img
+            class="beba-image"
+            src="imgs/beba_circo.png"
+            alt="Beba en el circo"
+          />
+        </div>
+        <div class="story-copy">
+          <h1>La gran Beba</h1>
+          <p
+            id="storyText"
+            data-text="Bienvenida a mi circo. Dicen que la magia aparece cuando hay ganas de reir, sorprenderse y guardar un momento bonito. Esta funcion tambien se hizo para compartirla contigo."
+          ></p>
+          <button class="continue-button" id="continueButton" type="button">
+            Entrar a la funcion
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <main class="scene" aria-label="Invitacion romantica al circo">
+      <div class="sky" aria-hidden="true">
+        <div class="sky-layer sky-night"></div>
+        <div class="sky-layer sky-day">
+          <span class="cloud cloud-one"></span>
+          <span class="cloud cloud-two"></span>
+          <span class="cloud cloud-three"></span>
+        </div>
+      </div>
+      <div class="stars" aria-hidden="true"></div>
+      <div class="grass" aria-hidden="true"></div>
+      <div class="walking-beba" aria-hidden="true">
+        <img src="imgs/caminando_beba.png" alt="" />
+      </div>
+
+      <section class="circus" aria-label="Carpa del circo">
+        <button
+          class="moon"
+          id="toggleSky"
+          type="button"
+          aria-label="Cambiar de noche a dia"
+        >
+          <span class="sun" aria-hidden="true">
+            <span class="sun-anime">
+              <span class="sun-ball"></span>
+              <span class="sun-light"><b></b><s></s></span>
+              <span class="sun-light"><b></b><s></s></span>
+              <span class="sun-light"><b></b><s></s></span>
+              <span class="sun-light"><b></b><s></s></span>
+              <span class="sun-light"><b></b><s></s></span>
+              <span class="sun-light"><b></b><s></s></span>
+              <span class="sun-light"><b></b><s></s></span>
+              <span class="sun-light"><b></b><s></s></span>
+              <span class="sun-light"><b></b><s></s></span>
+              <span class="sun-light"><b></b><s></s></span>
+              <span class="sun-light"><b></b><s></s></span>
+              <span class="sun-light"><b></b><s></s></span>
+            </span>
+          </span>
+        </button>
+        <div class="tent">
+          <div class="back-lights" aria-hidden="true">
+            <span class="spotlight spotlight-left"></span>
+            <span class="spotlight spotlight-right"></span>
+          </div>
+          <div class="string-lights" aria-hidden="true">
+            <span class="light-strand strand-left">
+              <i></i><i></i><i></i><i></i>
+            </span>
+            <span class="light-strand strand-right">
+              <i></i><i></i><i></i><i></i>
+            </span>
+          </div>
+          <div class="flag"></div>
+          <div class="tent-top"></div>
+          <div class="tent-body">
+            <div class="tent-stripe stripe-one"></div>
+            <div class="tent-stripe stripe-two"></div>
+            <button
+              class="door"
+              id="enterTent"
+              type="button"
+              aria-label="Entrar a la carpa"
+            ></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="inside-stage" id="insideStage" aria-label="Interior de la carpa">
+        <div class="stage-curtains" aria-hidden="true">
+          <span class="curtain-side curtain-left"></span>
+          <span class="curtain-side curtain-right"></span>
+        </div>
+        <div class="stage-glow" aria-hidden="true"></div>
+        <div class="magic-act">
+          <img
+            class="stage-beba"
+            src="imgs/beba_mirando_al_lado.png"
+            alt="Beba mirando al lado"
+          />
+          <div class="magic-dialog">
+            <p
+              id="magicDialogText"
+              data-text="Para mi primer truco tendras que elegir una carta. Este sera el juego de adivinar las cartas."
+            ></p>
+          </div>
+        </div>
+        <div class="card-game" id="cardGame" aria-label="Juego de adivinar las cartas">
+          <button class="magic-card" type="button" data-card="A de corazones">
+            <span class="card-front">A<span>♥</span></span>
+            <span class="card-back">?</span>
+          </button>
+          <button class="magic-card" type="button" data-card="7 de estrellas">
+            <span class="card-front">7<span>★</span></span>
+            <span class="card-back">?</span>
+          </button>
+          <button class="magic-card" type="button" data-card="Q de lunas">
+            <span class="card-front">Q<span>☾</span></span>
+            <span class="card-back">?</span>
+          </button>
+          <button class="magic-card" type="button" data-card="3 de soles">
+            <span class="card-front">3<span>☀</span></span>
+            <span class="card-back">?</span>
+          </button>
+          <button class="magic-card" type="button" data-card="K de carpas">
+            <span class="card-front">K<span>♛</span></span>
+            <span class="card-back">?</span>
+          </button>
+          <button class="magic-card" type="button" data-card="10 de magia">
+            <span class="card-front">10<span>✦</span></span>
+            <span class="card-back">?</span>
+          </button>
+        </div>
+        <p class="card-result" id="cardResult" aria-live="polite"></p>
+        <div class="circus-ring" aria-hidden="true"></div>
+        <section class="prize-ticket" id="prizeTicket" aria-label="Premio de la funcion">
+          <div class="ticket">
+            <span class="ticket-face ticket-front">
+              <span class="admit">
+                <strong>Admit One</strong>
+                <small>Premio de Beba</small>
+              </span>
+              <span class="ticket-main">
+                <span class="stars-row">****************</span>
+                <span class="show-name">The Greatest Circus Date</span>
+                <span class="balloons" aria-hidden="true">
+                  <i></i>
+                  <i></i>
+                </span>
+                <span class="circus-word">Circus</span>
+                <span class="ticket-line">
+                  15:00 | You are invited | Apr 21
+                </span>
+              </span>
+            </span>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
