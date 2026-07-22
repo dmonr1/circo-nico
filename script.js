@@ -1,21 +1,59 @@
 const enterTentButton = document.querySelector("#enterTent");
+const returnShowButton = document.querySelector("#returnShowButton");
 const scene = document.querySelector(".scene");
 const toggleSkyButton = document.querySelector("#toggleSky");
 const loader = document.querySelector("#loader");
 const loaderSpiral = document.querySelector("#loaderSpiral");
 const loaderNumber = document.querySelector("#loaderNumber");
+const presentationConfetti = document.querySelector("#presentationConfetti");
 const storyText = document.querySelector("#storyText");
 const continueButton = document.querySelector("#continueButton");
 const walkingBeba = document.querySelector(".walking-beba");
+const walkingBebaImage = walkingBeba.querySelector("img");
+const stageBeba = document.querySelector(".stage-beba");
 const magicDialogText = document.querySelector("#magicDialogText");
 const magicCards = document.querySelectorAll(".magic-card");
 const cardResult = document.querySelector("#cardResult");
+const prizeButton = document.querySelector("#prizeButton");
+const acceptTicketButton = document.querySelector("#acceptTicketButton");
+const declineTicketButton = document.querySelector("#declineTicketButton");
+const farewellConfetti = document.querySelector("#farewellConfetti");
 
 let bebaReachedDoor = false;
 let hasEnteredTent = false;
 let magicDialogStarted = false;
 let cardWasPicked = false;
 let magicTypingTimer = 0;
+let magicDialogSequenceTimer = 0;
+let cardTrickTimers = [];
+let tentVisits = 0;
+
+function createPresentationConfetti() {
+  const colors = ["#f7c65a", "#f45b2c", "#1fb6a6", "#fff3d3", "#b91f42"];
+
+  for (let index = 0; index < 52; index += 1) {
+    const piece = document.createElement("i");
+    piece.style.setProperty("--confetti-x", `${Math.random() * 100}%`);
+    piece.style.setProperty("--confetti-delay", `${Math.random() * 0.9}s`);
+    piece.style.setProperty("--confetti-duration", `${2.2 + Math.random() * 1.5}s`);
+    piece.style.setProperty("--confetti-turn", `${360 + Math.random() * 720}deg`);
+    piece.style.setProperty("--confetti-color", colors[index % colors.length]);
+    presentationConfetti.appendChild(piece);
+  }
+}
+
+function createFarewellConfetti() {
+  const colors = ["#f7c65a", "#f45b2c", "#1fb6a6", "#fff3d3", "#b91f42"];
+
+  for (let index = 0; index < 64; index += 1) {
+    const piece = document.createElement("i");
+    piece.style.setProperty("--farewell-x", `${Math.random() * 100}%`);
+    piece.style.setProperty("--farewell-delay", `${Math.random() * 0.8}s`);
+    piece.style.setProperty("--farewell-drift", `${-5 + Math.random() * 10}rem`);
+    piece.style.setProperty("--farewell-color", colors[index % colors.length]);
+    farewellConfetti.appendChild(piece);
+  }
+}
 
 function startLoaderSpiral() {
   const context = loaderSpiral.getContext("2d");
@@ -83,8 +121,16 @@ function typeMagicDialog() {
   }
 
   magicDialogStarted = true;
-  typeMagicText(magicDialogText.dataset.text, () => {
-    scene.classList.add("magic-dialog-complete");
+  const welcomeText = tentVisits > 1
+    ? "¡Qué bueno volver a verte! Bienvenida otra vez a mi función."
+    : "¡Bienvenidos a mi función de hoy! Hoy les tengo un súper truco.";
+
+  typeMagicText(welcomeText, () => {
+    magicDialogSequenceTimer = window.setTimeout(() => {
+      typeMagicText("Para mi primer truco tendrás que elegir una carta. Memorízala muy bien.", () => {
+        scene.classList.add("magic-dialog-complete");
+      });
+    }, 1200);
   });
 }
 
@@ -140,12 +186,14 @@ function runLoader() {
   }, 520);
 }
 
-function enterTent() {
-  if (hasEnteredTent) {
+function enterTent(isReturning = false) {
+  if (hasEnteredTent || (!bebaReachedDoor && !isReturning)) {
     return;
   }
 
   hasEnteredTent = true;
+  tentVisits += 1;
+  scene.classList.remove("show-return-sign");
   scene.classList.add("beba-entering");
   enterTentButton.classList.add("is-opening");
 
@@ -165,7 +213,27 @@ function pickMagicCard(card) {
   }
 
   cardWasPicked = true;
+  stageBeba.src = "imgs/beba_haceindo_un_truco.png";
+  stageBeba.alt = "Beba haciendo un truco de magia";
+  magicDialogText.textContent = "...";
+
+  const gameBounds = document.querySelector("#cardGame").getBoundingClientRect();
+  const stackCenterX = gameBounds.left + gameBounds.width / 2;
+  const stackCenterY = gameBounds.top + gameBounds.height / 2;
+
+  magicCards.forEach((magicCard, index) => {
+    const cardBounds = magicCard.getBoundingClientRect();
+    const cardCenterX = cardBounds.left + cardBounds.width / 2;
+    const cardCenterY = cardBounds.top + cardBounds.height / 2;
+
+    magicCard.style.setProperty("--stack-x", `${stackCenterX - cardCenterX}px`);
+    magicCard.style.setProperty("--stack-y", `${stackCenterY - cardCenterY}px`);
+    magicCard.style.setProperty("--stack-tilt", `${(index - 2.5) * 0.7}deg`);
+    magicCard.style.setProperty("--card-order", index);
+  });
+
   card.classList.add("is-picked");
+
   magicCards.forEach((magicCard) => {
     magicCard.disabled = true;
   });
@@ -173,35 +241,100 @@ function pickMagicCard(card) {
   cardResult.textContent = "Memoriza tu carta...";
   cardResult.classList.add("is-visible");
 
-  window.setTimeout(() => {
+  cardTrickTimers.push(window.setTimeout(() => {
     scene.classList.add("cards-hidden");
-    cardResult.textContent = "Ahora las cartas se voltean...";
-  }, 900);
+    magicDialogText.textContent = "Guau guau...";
+    cardResult.textContent = "Las cartas se voltean...";
+  }, 800));
 
-  window.setTimeout(() => {
+  cardTrickTimers.push(window.setTimeout(() => {
+    scene.classList.add("cards-stacked");
+    magicDialogText.textContent = "...";
+    cardResult.textContent = "Ahora se juntan en un solo mazo...";
+  }, 1550));
+
+  cardTrickTimers.push(window.setTimeout(() => {
     scene.classList.add("cards-mixing");
-    cardResult.textContent = "Se mezclan en la magia de la carpa...";
-  }, 1800);
+    scene.classList.add("magic-thinking");
+    magicDialogText.textContent = "Pensando...";
+    cardResult.textContent = "Y se barajan con la magia de la carpa...";
+  }, 2600));
 
-  window.setTimeout(() => {
+  cardTrickTimers.push(window.setTimeout(() => {
     scene.classList.remove("cards-mixing");
+    cardResult.classList.remove("is-visible");
+  }, 5100));
+
+  cardTrickTimers.push(window.setTimeout(() => {
+    scene.classList.remove("magic-thinking");
+    scene.classList.add("cards-suspense");
+    card.disabled = false;
+    magicDialogText.textContent = "Prepárate... Haz clic en tu carta para revelarla.";
+  }, 6500));
+}
+
+function revealMagicCard(card) {
+  if (!scene.classList.contains("cards-suspense") || !card.classList.contains("is-picked")) {
+    return;
+  }
+
+  card.disabled = true;
+  scene.classList.remove("cards-suspense");
+  magicDialogText.textContent = "...";
+  stageBeba.classList.add("is-changing");
+
+  cardTrickTimers.push(window.setTimeout(() => {
+    stageBeba.src = "imgs/beba_mirando_al_lado.png";
+    stageBeba.alt = "Beba mirando al lado";
+    stageBeba.classList.remove("is-changing");
+    scene.classList.remove("magic-thinking");
     scene.classList.add("cards-revealed");
     card.classList.add("is-revealed");
     cardResult.textContent = `Tu carta era: ${card.dataset.card}.`;
-  }, 4300);
+    cardResult.classList.add("is-visible");
+    magicDialogText.textContent = "¡La encontré!";
+  }, 140));
 
-  window.setTimeout(() => {
+  cardTrickTimers.push(window.setTimeout(() => {
     cardResult.classList.remove("is-visible");
-    scene.classList.remove("magic-dialog-complete");
-    typeMagicText(`Guau guau, adivine tu carta, no? Como ganaste, este es tu premio.`, () => {
-      scene.classList.add("show-prize-ticket");
+    typeMagicText(`Guau guau, adiviné tu carta. Como ganaste, tengo un premio para ti.`, () => {
+      scene.classList.add("prize-ready");
     });
-  }, 5700);
+  }, 2800));
 }
 
-enterTentButton.addEventListener("click", enterTent);
+enterTentButton.addEventListener("click", () => enterTent());
+returnShowButton.addEventListener("click", () => enterTent(true));
 magicCards.forEach((card) => {
-  card.addEventListener("click", () => pickMagicCard(card));
+  card.addEventListener("click", () => {
+    if (scene.classList.contains("cards-suspense")) {
+      revealMagicCard(card);
+      return;
+    }
+
+    pickMagicCard(card);
+  });
+});
+prizeButton.addEventListener("click", () => {
+  scene.classList.add("show-prize-ticket");
+});
+acceptTicketButton.addEventListener("click", () => {
+  scene.classList.add("farewell-active");
+});
+declineTicketButton.addEventListener("mouseenter", () => {
+  declineTicketButton.textContent = "Sí";
+});
+declineTicketButton.addEventListener("mouseleave", () => {
+  declineTicketButton.textContent = "No";
+});
+declineTicketButton.addEventListener("focus", () => {
+  declineTicketButton.textContent = "Sí";
+});
+declineTicketButton.addEventListener("blur", () => {
+  declineTicketButton.textContent = "No";
+});
+declineTicketButton.addEventListener("click", () => {
+  scene.classList.add("farewell-active");
 });
 toggleSkyButton.addEventListener("click", () => {
   scene.classList.toggle("is-day");
@@ -215,27 +348,47 @@ walkingBeba.addEventListener("animationend", (event) => {
   }
 
   bebaReachedDoor = true;
+  walkingBebaImage.src = "imgs/caminando_beba_invertida.png";
   scene.classList.add("beba-arrived");
+  enterTentButton.disabled = false;
 });
 
+createPresentationConfetti();
+createFarewellConfetti();
 startLoaderSpiral();
 runLoader();
 
 window.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
+  if (event.key === "Escape" && hasEnteredTent) {
     enterTentButton.classList.remove("is-opening");
     scene.classList.remove("beba-entering", "is-entering-tent", "is-inside-tent", "magic-dialog-complete");
-    scene.classList.remove("cards-hidden", "cards-mixing", "cards-revealed", "show-prize-ticket");
+    scene.classList.remove("cards-hidden", "cards-stacked", "cards-mixing", "cards-revealed", "cards-suspense", "magic-thinking", "prize-ready", "show-prize-ticket", "farewell-active");
     hasEnteredTent = false;
+    bebaReachedDoor = false;
+    enterTentButton.disabled = true;
+    scene.classList.add("show-return-sign");
     magicDialogStarted = false;
     cardWasPicked = false;
+    cardTrickTimers.forEach((timer) => window.clearTimeout(timer));
+    cardTrickTimers = [];
     window.clearTimeout(magicTypingTimer);
+    window.clearTimeout(magicDialogSequenceTimer);
     magicDialogText.textContent = "";
+    stageBeba.src = "imgs/beba_mirando_al_lado.png";
+    stageBeba.alt = "Beba mirando al lado";
+    stageBeba.classList.remove("is-changing");
     cardResult.textContent = "";
     cardResult.classList.remove("is-visible");
+    declineTicketButton.textContent = "No";
     magicCards.forEach((card) => {
       card.disabled = false;
       card.classList.remove("is-picked", "is-revealed");
+      card.style.removeProperty("--stack-x");
+      card.style.removeProperty("--stack-y");
+      card.style.removeProperty("--stack-tilt");
+      card.style.removeProperty("--card-order");
     });
+
+    scene.classList.remove("beba-arrived");
   }
 });

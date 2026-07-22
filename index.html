@@ -8,13 +8,19 @@
       name="description"
       content="Una invitacion romantica y animada para una noche de circo."
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <section class="loader" id="loader" aria-label="Preparando funcion">
       <canvas class="loader-spiral" id="loaderSpiral" aria-hidden="true"></canvas>
       <div class="loader-marquee">
-        <span id="loaderNumber">Cargando</span>
+        <span id="loaderNumber">0%</span>
       </div>
       <div class="loader-story" aria-live="polite">
         <div class="beba-stage">
@@ -25,16 +31,17 @@
           />
         </div>
         <div class="story-copy">
-          <h1>La gran Beba</h1>
+          <h1>Presentamos a la “GRAN BEBA”</h1>
           <p
             id="storyText"
-            data-text="Bienvenida a mi circo. Dicen que la magia aparece cuando hay ganas de reir, sorprenderse y guardar un momento bonito. Esta funcion tambien se hizo para compartirla contigo."
+            data-text="Bienvenida a mi circo. Dicen que la magia aparece cuando hay ganas de reir, sorprenderse y guardar un momento bonito."
           ></p>
           <button class="continue-button" id="continueButton" type="button">
-            Entrar a la funcion
+            Acompáñame
           </button>
         </div>
       </div>
+      <div class="presentation-confetti" id="presentationConfetti" aria-hidden="true"></div>
     </section>
 
     <main class="scene" aria-label="Invitacion romantica al circo">
@@ -48,8 +55,12 @@
       </div>
       <div class="stars" aria-hidden="true"></div>
       <div class="grass" aria-hidden="true"></div>
+      <button class="return-show-sign" id="returnShowButton" type="button">
+        Vuelve a entrar<br />a la función
+      </button>
       <div class="walking-beba" aria-hidden="true">
         <img src="imgs/caminando_beba.png" alt="" />
+        <span class="arrival-dialog">Entremos a la función</span>
       </div>
 
       <section class="circus" aria-label="Carpa del circo">
@@ -100,6 +111,7 @@
               id="enterTent"
               type="button"
               aria-label="Entrar a la carpa"
+              disabled
             ></button>
           </div>
         </div>
@@ -122,31 +134,34 @@
               id="magicDialogText"
               data-text="Para mi primer truco tendras que elegir una carta. Este sera el juego de adivinar las cartas."
             ></p>
+            <button class="prize-button" id="prizeButton" type="button">
+              Ver mi premio
+            </button>
           </div>
         </div>
         <div class="card-game" id="cardGame" aria-label="Juego de adivinar las cartas">
-          <button class="magic-card" type="button" data-card="A de corazones">
-            <span class="card-front">A<span>♥</span></span>
+          <button class="magic-card" type="button" data-card="A de corazones" data-color="red">
+            <span class="card-front"><span class="card-corner card-corner-top"><b>A</b><i>♥</i></span><span class="card-suit">♥</span><span class="card-corner card-corner-bottom"><b>A</b><i>♥</i></span></span>
             <span class="card-back">?</span>
           </button>
-          <button class="magic-card" type="button" data-card="7 de estrellas">
-            <span class="card-front">7<span>★</span></span>
+          <button class="magic-card" type="button" data-card="7 de diamantes" data-color="red">
+            <span class="card-front"><span class="card-corner card-corner-top"><b>7</b><i>♦</i></span><span class="card-suit">♦</span><span class="card-corner card-corner-bottom"><b>7</b><i>♦</i></span></span>
             <span class="card-back">?</span>
           </button>
-          <button class="magic-card" type="button" data-card="Q de lunas">
-            <span class="card-front">Q<span>☾</span></span>
+          <button class="magic-card" type="button" data-card="Q de tréboles" data-color="black">
+            <span class="card-front"><span class="card-corner card-corner-top"><b>Q</b><i>♣</i></span><span class="card-suit">♣</span><span class="card-corner card-corner-bottom"><b>Q</b><i>♣</i></span></span>
             <span class="card-back">?</span>
           </button>
-          <button class="magic-card" type="button" data-card="3 de soles">
-            <span class="card-front">3<span>☀</span></span>
+          <button class="magic-card" type="button" data-card="3 de picas" data-color="black">
+            <span class="card-front"><span class="card-corner card-corner-top"><b>3</b><i>♠</i></span><span class="card-suit">♠</span><span class="card-corner card-corner-bottom"><b>3</b><i>♠</i></span></span>
             <span class="card-back">?</span>
           </button>
-          <button class="magic-card" type="button" data-card="K de carpas">
-            <span class="card-front">K<span>♛</span></span>
+          <button class="magic-card" type="button" data-card="K de corazones" data-color="red">
+            <span class="card-front"><span class="card-corner card-corner-top"><b>K</b><i>♥</i></span><span class="card-suit">♥</span><span class="card-corner card-corner-bottom"><b>K</b><i>♥</i></span></span>
             <span class="card-back">?</span>
           </button>
-          <button class="magic-card" type="button" data-card="10 de magia">
-            <span class="card-front">10<span>✦</span></span>
+          <button class="magic-card" type="button" data-card="10 de diamantes" data-color="red">
+            <span class="card-front"><span class="card-corner card-corner-top"><b>10</b><i>♦</i></span><span class="card-suit">♦</span><span class="card-corner card-corner-bottom"><b>10</b><i>♦</i></span></span>
             <span class="card-back">?</span>
           </button>
         </div>
@@ -156,22 +171,29 @@
           <div class="ticket">
             <span class="ticket-face ticket-front">
               <span class="admit">
-                <strong>Admit One</strong>
-                <small>Premio de Beba</small>
+                <strong>Circo</strong>
+                <small>Invitación especial</small>
               </span>
               <span class="ticket-main">
-                <span class="stars-row">****************</span>
-                <span class="show-name">The Greatest Circus Date</span>
+                <span class="stars-row">★ ★ ★ ★ ★</span>
+                <span class="show-name">Mañana · 7:30 p. m.</span>
                 <span class="balloons" aria-hidden="true">
                   <i></i>
                   <i></i>
                 </span>
-                <span class="circus-word">Circus</span>
-                <span class="ticket-line">
-                  15:00 | You are invited | Apr 21
+                <span class="circus-word">Circo</span>
+                <span class="ticket-line">¿Quieres ir con Dieguito?</span>
+                <span class="ticket-actions">
+                  <button class="accept-ticket-button" id="acceptTicketButton" type="button">Sí</button>
+                  <button class="decline-ticket-button" id="declineTicketButton" type="button">No</button>
                 </span>
               </span>
             </span>
+          </div>
+          <div class="farewell-confetti" id="farewellConfetti" aria-hidden="true"></div>
+          <div class="farewell-message" aria-live="polite">
+            <strong>¡Nos vemos mañana!</strong>
+            <span>Que la función nos espera </span>
           </div>
         </section>
       </section>

@@ -23,7 +23,7 @@ body {
   min-height: 100%;
   margin: 0;
   color: var(--cream);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Poppins", sans-serif;
   background: #111d3f;
   overflow-x: hidden;
 }
@@ -83,7 +83,7 @@ button {
   position: relative;
   z-index: 2;
   display: grid;
-  width: min(82vw, 36rem);
+  width: min(80vw, 44rem);
   min-height: clamp(6rem, 16vw, 9rem);
   place-items: center;
   border: 0.42rem solid #0d98a6;
@@ -99,11 +99,16 @@ button {
 }
 
 .loader-marquee span {
+  display: inline-block;
+  min-width: 5ch;
   color: #7f1532;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: clamp(2.35rem, 8.8vw, 6.4rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
   letter-spacing: 0.04em;
   line-height: 0.9;
+  text-align: center;
   text-shadow: 0.1rem 0.1rem 0 #fff3d3;
   text-transform: uppercase;
 }
@@ -117,9 +122,9 @@ button {
   position: absolute;
   z-index: 3;
   display: grid;
-  grid-template-columns: minmax(14rem, 0.85fr) minmax(22rem, 1.15fr);
+  grid-template-columns: minmax(14rem, 0.7fr) minmax(30rem, 1.55fr);
   align-items: center;
-  width: min(92vw, 66rem);
+  width: min(95vw, 78rem);
   gap: clamp(1.2rem, 4vw, 3rem);
   color: #fff3d3;
   text-align: left;
@@ -140,8 +145,9 @@ button {
   display: grid;
   justify-items: center;
   gap: 0.8rem;
-  justify-self: end;
+  justify-self: start;
   isolation: isolate;
+  transform: translateX(clamp(-2.5rem, -3vw, -1rem));
 }
 
 .beba-stage::before,
@@ -152,14 +158,11 @@ button {
   z-index: -1;
   width: 74%;
   content: "";
-  background: linear-gradient(
-    180deg,
-    rgba(255, 231, 137, 0.54),
-    rgba(255, 218, 97, 0.26) 46%,
-    transparent 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(255, 231, 137, 0.54),
+      rgba(255, 218, 97, 0.26) 46%,
+      transparent 100%);
   clip-path: polygon(43% 0, 57% 0, 100% 100%, 0 100%);
-  filter: blur(6px);
   opacity: 0;
   mix-blend-mode: screen;
   transform-origin: 50% 0;
@@ -202,12 +205,11 @@ button {
 }
 
 .story-copy h1 {
-  max-width: 18ch;
+  max-width: 24ch;
   margin: 0;
   color: #f7c65a;
   font-size: clamp(1.85rem, 4.8vw, 3.9rem);
   line-height: 0.9;
-  text-align: center;
   text-shadow:
     0.08rem 0.08rem 0 #7f1532,
     0 0.7rem 1.4rem rgba(0, 0, 0, 0.32);
@@ -224,14 +226,39 @@ button {
   transform: translateY(0) scale(1);
 }
 
+.presentation-confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.presentation-confetti i {
+  position: absolute;
+  top: -1.5rem;
+  left: var(--confetti-x);
+  width: 0.65rem;
+  height: 1rem;
+  background: var(--confetti-color);
+  border-radius: 0.12rem;
+  opacity: 0;
+}
+
+.loader.show-title .presentation-confetti i {
+  animation: presentationConfettiFall var(--confetti-duration) linear var(--confetti-delay) both;
+}
+
 .story-copy {
   display: grid;
   gap: 1.15rem;
   justify-items: start;
+  width: 100%;
+  transform: translateY(clamp(-3.5rem, -5vh, -1.75rem));
 }
 
 .story-copy p {
-  max-width: 46rem;
+  max-width: 100%;
   margin: 0;
   color: rgba(255, 243, 211, 0.92);
   font-size: clamp(1.35rem, 4vw, 2.3rem);
@@ -258,25 +285,28 @@ button {
 }
 
 .loader.text-complete .story-copy p::after {
-  opacity: 0;
+  display: none;
 }
 
 .continue-button {
-  min-height: 3.2rem;
-  padding: 0.8rem 1.25rem;
+  position: relative;
+  min-width: min(15rem, 78vw);
+  min-height: 4.4rem;
+  padding: 0.95rem 2.2rem;
   color: #401022;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-transform: none;
   background:
-    radial-gradient(circle at 0 50%, transparent 0 0.75rem, #fff4c7 0.8rem),
-    radial-gradient(circle at 100% 50%, transparent 0 0.75rem, #fff4c7 0.8rem),
-    linear-gradient(135deg, #fff4c7, #f7c65a);
-  border: 0.22rem solid #0d98a6;
-  border-radius: 0.45rem;
+    radial-gradient(circle at 0 50%, transparent 0 0.72rem, #fff4c7 0.77rem),
+    radial-gradient(circle at 100% 50%, transparent 0 0.72rem, #fff4c7 0.77rem),
+    linear-gradient(135deg, #fff4c7 0%, #ffe18a 52%, #f7c65a 100%);
+  border: 0.22rem solid #b93621;
+  border-radius: 0.3rem;
   box-shadow:
-    0 0.55rem 0 #b93621,
+    0 0.48rem 0 #7f1532,
     0 1rem 1.5rem rgba(0, 0, 0, 0.34);
   opacity: 0;
   pointer-events: none;
@@ -285,6 +315,15 @@ button {
     opacity 420ms ease,
     transform 420ms ease,
     filter 180ms ease;
+}
+
+.continue-button::before {
+  position: absolute;
+  inset: 0.38rem 0.65rem;
+  content: "";
+  border: 0.1rem dashed rgba(127, 21, 50, 0.72);
+  border-radius: 0.18rem;
+  pointer-events: none;
 }
 
 .continue-button:hover,
@@ -590,10 +629,10 @@ button {
   position: relative;
   z-index: 4;
   display: grid;
-  grid-template-columns: minmax(10rem, 18rem) minmax(16rem, 30rem);
+  grid-template-columns: minmax(13rem, 23rem) minmax(14rem, 34rem);
   align-items: center;
   gap: clamp(1rem, 4vw, 2.4rem);
-  width: min(88vw, 54rem);
+  width: min(94vw, 62rem);
   margin-bottom: clamp(8rem, 20vh, 13rem);
   opacity: 0;
   transform: translateY(1rem) scale(0.96);
@@ -608,16 +647,27 @@ button {
 }
 
 .stage-beba {
-  width: min(100%, 17rem);
+  width: min(100%, 27rem);
+  max-height: min(56vh, 34rem);
+  object-fit: contain;
   justify-self: end;
+  opacity: 1;
   filter:
-    drop-shadow(0 1.1rem 1rem rgba(0, 0, 0, 0.42))
-    drop-shadow(0 0 1.2rem rgba(247, 198, 90, 0.22));
+    drop-shadow(0 1.1rem 1rem rgba(0, 0, 0, 0.42)) drop-shadow(0 0 1.2rem rgba(247, 198, 90, 0.22));
+  transition: opacity 500ms ease, transform 700ms ease;
+}
+
+.stage-beba.is-changing {
+  opacity: 0;
+  transform: scale(0.96);
 }
 
 .magic-dialog {
   position: relative;
-  min-height: clamp(7rem, 16vw, 10rem);
+  width: fit-content;
+  min-width: min(10rem, 42vw);
+  max-width: min(100%, 34rem);
+  min-height: 0;
   padding: clamp(1rem, 3vw, 1.5rem);
   color: #3c1712;
   background:
@@ -628,6 +678,48 @@ button {
   box-shadow:
     0 0.75rem 0 #7f1532,
     0 1.4rem 1.6rem rgba(0, 0, 0, 0.32);
+  transition:
+    width 650ms ease,
+    min-height 650ms ease,
+    padding 650ms ease;
+  margin-left: -60px;
+}
+
+.scene.magic-thinking .magic-dialog {
+  width: min(12rem, 42vw);
+  min-height: 3.8rem;
+  justify-self: start;
+  padding: 0.85rem 1rem;
+}
+
+.prize-button {
+  display: none;
+  width: max-content;
+  max-width: 100%;
+  margin: 1rem auto 0;
+  padding: 0.7rem 1.15rem;
+  color: #fff4c7;
+  background: #a31b35;
+  border: 0.16rem solid #f45b2c;
+  border-radius: 999px;
+  box-shadow: 0 0.28rem 0 #5f1227;
+  font: 900 1rem/1 "Poppins", sans-serif;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.45rem) scale(0.96);
+  transition: opacity 420ms ease, transform 420ms ease, filter 180ms ease;
+}
+
+.scene.prize-ready .prize-button {
+  display: block;
+  pointer-events: auto;
+  animation: prizeButtonReveal 420ms ease forwards;
+}
+
+.prize-button:hover,
+.prize-button:focus-visible {
+  filter: brightness(1.14);
 }
 
 .magic-dialog::before {
@@ -644,11 +736,14 @@ button {
 }
 
 .magic-dialog p {
+  width: fit-content;
+  max-width: 30rem;
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: clamp(1.05rem, 2.5vw, 1.45rem);
   font-weight: 900;
   line-height: 1.35;
+  text-wrap: pretty;
 }
 
 .magic-dialog p::after {
@@ -672,9 +767,9 @@ button {
   bottom: clamp(4.4rem, 11vh, 7rem);
   z-index: 5;
   display: grid;
-  grid-template-columns: repeat(6, minmax(3.6rem, 1fr));
+  grid-template-columns: repeat(6, minmax(4.2rem, 1fr));
   gap: clamp(0.8rem, 2.5vw, 1.4rem);
-  width: min(92vw, 46rem);
+  width: min(96vw, 56rem);
   opacity: 0;
   pointer-events: none;
   transform: translateX(-50%) translateY(0.8rem);
@@ -692,13 +787,13 @@ button {
 .magic-card {
   position: relative;
   width: 100%;
-  max-width: 5.8rem;
+  max-width: 7rem;
   aspect-ratio: 0.68;
   justify-self: center;
   padding: 0;
   color: #fff4c7;
   background: transparent;
-  border: 0.18rem solid #f7c65a;
+  border: 0.12rem solid #d8d4ca;
   border-radius: 0.42rem;
   box-shadow:
     0 0.55rem 0 #3c1712,
@@ -711,8 +806,8 @@ button {
     filter 180ms ease;
 }
 
-.magic-card:hover,
-.magic-card:focus-visible {
+.scene.magic-dialog-complete:not(.cards-hidden):not(.cards-stacked):not(.cards-revealed) .magic-card:not(:disabled):hover,
+.scene.magic-dialog-complete:not(.cards-hidden):not(.cards-stacked):not(.cards-revealed) .magic-card:not(:disabled):focus-visible {
   filter: brightness(1.1);
   transform: translateY(-0.25rem);
 }
@@ -725,8 +820,17 @@ button {
   transform: rotateY(180deg);
 }
 
+.scene.cards-stacked .magic-card {
+  z-index: calc(10 + var(--card-order));
+  box-shadow:
+    0 0.2rem 0 rgba(60, 23, 18, 0.9),
+    0 0.8rem 1.2rem rgba(0, 0, 0, 0.42);
+  transform:
+    translate(var(--stack-x), var(--stack-y)) rotateY(180deg) rotate(var(--stack-tilt));
+}
+
 .scene.cards-mixing .magic-card {
-  animation: cardMix 1.8s ease-in-out infinite;
+  animation: cardMix 1.35s cubic-bezier(0.45, 0, 0.25, 1) infinite;
 }
 
 .scene.cards-mixing .magic-card:nth-child(2) {
@@ -749,15 +853,21 @@ button {
   animation-delay: -1.25s;
 }
 
+.scene.cards-suspense .magic-card.is-picked {
+  z-index: 40;
+  animation: chosenCardSuspense 120ms linear infinite;
+}
+
 .scene.cards-revealed .magic-card {
-  opacity: 0.18;
-  transform: translateY(0.5rem) scale(0.82) rotateY(180deg);
+  opacity: 0;
+  transform: translate(var(--stack-x), var(--stack-y)) scale(0.82) rotateY(180deg);
+  transition-duration: 1400ms, 1800ms, 180ms;
 }
 
 .scene.cards-revealed .magic-card.is-revealed {
   z-index: 2;
   opacity: 1;
-  transform: translateY(-1rem) scale(1.28) rotateY(0deg);
+  transform: translate(var(--stack-x), calc(var(--stack-y) - 1rem)) scale(1.35) rotateY(0deg);
 }
 
 .card-back,
@@ -768,7 +878,7 @@ button {
   place-items: center;
   border-radius: 0.28rem;
   backface-visibility: hidden;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Poppins", sans-serif;
   font-size: clamp(2rem, 6vw, 3.4rem);
   font-weight: 900;
 }
@@ -781,18 +891,51 @@ button {
 }
 
 .card-front {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
+  display: block;
   color: #7f1532;
-  background: #fff4c7;
-  border: 0.16rem solid #f45b2c;
+  background: linear-gradient(145deg, #fff, #f7f6f1);
+  border: 0.08rem solid #ddd9d0;
 }
 
-.card-front span {
-  color: #b91f42;
-  font-size: 0.55em;
+.card-suit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #d71920;
+  font-size: clamp(2.5rem, 7vw, 4.2rem);
   line-height: 1;
+  transform: translate(-50%, -50%);
+}
+
+.card-corner {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  color: #d71920;
+  font-size: clamp(0.72rem, 1.8vw, 1rem);
+  line-height: 0.9;
+}
+
+.card-corner b,
+.card-corner i {
+  font: inherit;
+}
+
+.card-corner-top {
+  top: 0.35rem;
+  left: 0.38rem;
+}
+
+.card-corner-bottom {
+  right: 0.38rem;
+  bottom: 0.35rem;
+  transform: rotate(180deg);
+}
+
+.magic-card[data-color="black"] .card-front,
+.magic-card[data-color="black"] .card-suit,
+.magic-card[data-color="black"] .card-corner {
+  color: #211b1a;
 }
 
 .card-result {
@@ -803,7 +946,7 @@ button {
   width: min(86vw, 36rem);
   margin: 0;
   color: #fff4c7;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: clamp(1rem, 2.5vw, 1.35rem);
   font-weight: 900;
   text-align: center;
@@ -971,11 +1114,9 @@ button {
   border-radius: 0;
   background:
     radial-gradient(ellipse at 50% 12%, rgba(255, 232, 151, 0.3), transparent 36%),
-    repeating-linear-gradient(
-      0deg,
+    repeating-linear-gradient(0deg,
       rgba(255, 231, 158, 0.08) 0 0.16rem,
-      transparent 0.16rem 2.45rem
-    ),
+      transparent 0.16rem 2.45rem),
     linear-gradient(180deg, #b66a2b 0%, #8f4a1e 54%, #5a2b16 100%);
   clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
   box-shadow:
@@ -1048,20 +1189,72 @@ button {
   transform-origin: 50% 100%;
 }
 
-.loader.is-done + .scene .walking-beba {
+.arrival-dialog {
+  position: absolute;
+  left: calc(100% + 0.75rem);
+  bottom: 72%;
+  width: max-content;
+  max-width: min(13rem, 38vw);
+  padding: 0.65rem 0.85rem;
+  color: #3c1712;
+  background: #fff4c7;
+  border: 0.18rem solid #f45b2c;
+  border-radius: 0.65rem;
+  box-shadow: 0 0.38rem 0 #7f1532, 0 0.8rem 1rem rgba(0, 0, 0, 0.28);
+  font: 900 clamp(0.78rem, 1.8vw, 1rem)/1.2 "Poppins", sans-serif;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(0.45rem) scale(0.92);
+  transition: opacity 480ms ease 180ms, transform 520ms ease 180ms;
+}
+
+.arrival-dialog::before {
+  position: absolute;
+  right: 100%;
+  bottom: 0.7rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  content: "";
+  background: #fff4c7;
+  border-left: 0.18rem solid #f45b2c;
+  border-bottom: 0.18rem solid #f45b2c;
+  transform: translateX(0.36rem) rotate(45deg);
+}
+
+.scene.beba-arrived .walking-beba {
+  width: clamp(5.5rem, 10vw, 7.5rem);
+}
+
+.scene.beba-arrived .walking-beba img {
+  animation: none;
+  transform: none;
+}
+
+.scene.beba-arrived .arrival-dialog {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.scene.beba-entering .arrival-dialog,
+.scene.show-return-sign .arrival-dialog {
+  opacity: 0;
+}
+
+.loader.is-done+.scene .walking-beba {
   animation: bebaWalkToDoor 9s cubic-bezier(0.25, 0.75, 0.24, 1) 0.85s forwards;
 }
 
-.loader.is-done + .scene .walking-beba img {
+.loader.is-done+.scene .walking-beba img {
   animation: bebaSteps 620ms ease-in-out 0.85s 14;
 }
 
-.scene.beba-entering .walking-beba {
-  opacity: 0;
-  transform: translateY(0.45rem) scale(0.7);
-  transition:
-    opacity 620ms ease,
-    transform 620ms cubic-bezier(0.2, 0.9, 0.2, 1);
+.loader.is-done+.scene.beba-entering .walking-beba {
+  left: calc(50% - clamp(1.8rem, 4vw, 2.65rem));
+  animation: bebaDisappearIntoTent 500ms ease-in forwards;
+}
+
+.loader.is-done+.scene.beba-entering .walking-beba img {
+  animation: none;
 }
 
 .hero {
@@ -1297,8 +1490,7 @@ h1 {
   width: min(86vw, 31rem);
   height: min(73vw, 27.2rem);
   filter:
-    drop-shadow(0 1rem 1.1rem rgba(15, 10, 30, 0.2))
-    drop-shadow(0 0 1.1rem rgba(247, 198, 90, 0.22));
+    drop-shadow(0 1rem 1.1rem rgba(15, 10, 30, 0.2)) drop-shadow(0 0 1.1rem rgba(247, 198, 90, 0.22));
 }
 
 .string-lights {
@@ -1323,13 +1515,11 @@ h1 {
 }
 
 .strand-left {
-  left: 2%;
-  transform: rotate(9deg);
+  left: 6%;
 }
 
 .strand-right {
-  right: 2%;
-  transform: rotate(-9deg);
+  right: 6%;
 }
 
 .light-strand i {
@@ -1435,7 +1625,7 @@ h1 {
 .tent-top::before,
 .tent-top::after {
   position: absolute;
-  top: 2.1rem;
+  top: 1.1rem;
   width: 0;
   height: 0;
   content: "";
@@ -1445,11 +1635,11 @@ h1 {
 }
 
 .tent-top::before {
-  left: -9.8rem;
+  left: -11.2rem;
 }
 
 .tent-top::after {
-  left: 1.9rem;
+  left: 3.5rem;
 }
 
 .tent-body {
@@ -1654,7 +1844,7 @@ h1 {
     radial-gradient(circle at 0 100%, transparent 1.55rem, #fff4c7 1.6rem),
     radial-gradient(circle at 100% 100%, transparent 1.55rem, #fff4c7 1.6rem);
   color: #262323;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-family: "Poppins", sans-serif;
   text-align: center;
   text-transform: uppercase;
 }
@@ -1683,7 +1873,7 @@ h1 {
   display: block;
   max-width: 5.8rem;
   color: #4a3b30;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 0.62rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -1708,7 +1898,7 @@ h1 {
 .ticket-line,
 .back-kicker,
 .reply-row {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1725,6 +1915,8 @@ h1 {
 }
 
 .circus-word {
+  position: relative;
+  z-index: 2;
   color: #fff4c7;
   font-size: clamp(4.1rem, 13vw, 8rem);
   line-height: 0.9;
@@ -1736,16 +1928,115 @@ h1 {
   font-size: clamp(0.8rem, 2.4vw, 1.25rem);
 }
 
+.ticket-actions {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  gap: 0.7rem;
+  justify-content: center;
+}
+
+.accept-ticket-button,
+.decline-ticket-button {
+  position: relative;
+  z-index: 2;
+  min-width: 6.5rem;
+  padding: 0.62rem 1.2rem;
+  color: #fff4c7;
+  background: #7f1532;
+  border: 0.16rem solid #f7c65a;
+  border-radius: 999px;
+  box-shadow: 0 0.3rem 0 #401022;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.accept-ticket-button:hover,
+.accept-ticket-button:focus-visible,
+.decline-ticket-button:hover,
+.decline-ticket-button:focus-visible {
+  filter: brightness(1.15);
+  transform: translateY(-0.12rem);
+}
+
+.decline-ticket-button {
+  color: #7f1532;
+  background: #fff4c7;
+  border-color: #7f1532;
+  box-shadow: 0 0.3rem 0 #d29e4f;
+}
+
+.farewell-confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.farewell-confetti i {
+  position: absolute;
+  top: -1.2rem;
+  left: var(--farewell-x);
+  width: 0.65rem;
+  height: 1rem;
+  background: var(--farewell-color);
+  border-radius: 0.12rem;
+  opacity: 0;
+}
+
+.scene.farewell-active .farewell-confetti i {
+  animation: farewellConfettiFall 3.2s linear var(--farewell-delay) both;
+}
+
+.farewell-message {
+  position: absolute;
+  z-index: 11;
+  display: grid;
+  gap: 0.45rem;
+  justify-items: center;
+  width: min(88vw, 34rem);
+  padding: clamp(1.2rem, 4vw, 2rem);
+  color: #401022;
+  background: linear-gradient(135deg, #fff4c7, #f7c65a);
+  border: 0.28rem solid #f45b2c;
+  border-radius: 1rem;
+  box-shadow: 0 1.4rem 3rem rgba(0, 0, 0, 0.42);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(1rem) scale(0.88);
+}
+
+.farewell-message strong {
+  font-size: clamp(1.7rem, 5vw, 3rem);
+}
+
+.farewell-message span {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 700;
+}
+
+.scene.farewell-active .prize-ticket .ticket {
+  animation: acceptedTicket 700ms ease forwards;
+}
+
+.scene.farewell-active .farewell-message {
+  animation: farewellMessageReveal 700ms cubic-bezier(0.2, 0.9, 0.2, 1) 480ms forwards;
+}
+
 .balloons {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 1;
 }
 
 .balloons i {
   position: absolute;
-  top: 24%;
-  width: clamp(2.8rem, 8vw, 4.6rem);
+  top: 31%;
+  width: clamp(2.2rem, 6vw, 3.6rem);
   aspect-ratio: 0.72;
   border-radius: 50% 50% 45% 45%;
   background:
@@ -1766,11 +2057,11 @@ h1 {
 }
 
 .balloons i:first-child {
-  left: 8%;
+  left: 1%;
 }
 
 .balloons i:last-child {
-  right: 8%;
+  right: 1%;
 }
 
 .ticket-back {
@@ -1783,7 +2074,7 @@ h1 {
   transform: rotateY(180deg);
 }
 
-.ticket-back > span:not(.ticket-back-border) {
+.ticket-back>span:not(.ticket-back-border) {
   position: relative;
   z-index: 2;
 }
@@ -1850,8 +2141,74 @@ h1 {
   from {
     opacity: 0.16;
   }
+
   to {
     opacity: 0.4;
+  }
+}
+
+@keyframes presentationConfettiFall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -4vh, 0) rotate(0deg);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.9;
+    transform: translate3d(1.8rem, 108vh, 0) rotate(var(--confetti-turn));
+  }
+}
+
+@keyframes prizeButtonReveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.45rem) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes acceptedTicket {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(-1.2deg) scale(1);
+  }
+  45% {
+    opacity: 1;
+    transform: translateY(-0.8rem) rotate(1deg) scale(1.06);
+    filter: brightness(1.18) drop-shadow(0 0 1.2rem rgba(247, 198, 90, 0.8));
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-2rem) rotate(0deg) scale(0.82);
+  }
+}
+
+@keyframes farewellMessageReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes farewellConfettiFall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -4vh, 0) rotate(0deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.95;
+    transform: translate3d(var(--farewell-drift), 108vh, 0) rotate(760deg);
   }
 }
 
@@ -1859,6 +2216,7 @@ h1 {
   from {
     transform: translate(-50%, -50%) rotate(0deg);
   }
+
   to {
     transform: translate(-50%, -50%) rotate(360deg);
   }
@@ -1869,6 +2227,7 @@ h1 {
     opacity: 0.42;
     transform: rotate(-20deg) translateX(-0.4rem);
   }
+
   to {
     opacity: 0.72;
     transform: rotate(-11deg) translateX(0.35rem);
@@ -1880,6 +2239,7 @@ h1 {
     opacity: 0.38;
     transform: rotate(20deg) translateX(0.4rem);
   }
+
   to {
     opacity: 0.68;
     transform: rotate(10deg) translateX(-0.35rem);
@@ -1892,13 +2252,16 @@ h1 {
     opacity: 0;
     transform: translateY(0) scale(0.96);
   }
+
   8% {
     opacity: 1;
   }
+
   78% {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+
   100% {
     left: calc(50% - clamp(1.8rem, 4vw, 2.65rem));
     opacity: 1;
@@ -1906,11 +2269,25 @@ h1 {
   }
 }
 
+@keyframes bebaDisappearIntoTent {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(0.35rem) scale(0.72);
+  }
+}
+
 @keyframes bebaSteps {
+
   0%,
   100% {
     transform: translateY(0) rotate(-1.5deg);
   }
+
   50% {
     transform: translateY(-0.32rem) rotate(1.5deg);
   }
@@ -1920,6 +2297,7 @@ h1 {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-18%);
   }
@@ -1929,6 +2307,7 @@ h1 {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(18%);
   }
@@ -1943,29 +2322,106 @@ h1 {
 
 @keyframes cardMix {
   0% {
-    transform: translate(0, 0) rotateY(180deg) rotate(0deg);
+    transform: translate(var(--stack-x), var(--stack-y)) rotateY(180deg) rotate(var(--stack-tilt));
   }
+
   25% {
-    transform: translate(-1.4rem, -0.8rem) rotateY(180deg) rotate(-8deg);
+    transform: translate(calc(var(--stack-x) - 2.2rem), calc(var(--stack-y) - 0.55rem)) rotateY(180deg) rotate(-8deg);
   }
+
   50% {
-    transform: translate(1.2rem, 0.5rem) rotateY(180deg) rotate(7deg);
+    transform: translate(calc(var(--stack-x) + 2rem), calc(var(--stack-y) + 0.35rem)) rotateY(180deg) rotate(7deg);
   }
+
   75% {
-    transform: translate(-0.5rem, 0.9rem) rotateY(180deg) rotate(-5deg);
+    transform: translate(calc(var(--stack-x) - 0.8rem), calc(var(--stack-y) + 0.55rem)) rotateY(180deg) rotate(-5deg);
   }
+
   100% {
-    transform: translate(0, 0) rotateY(180deg) rotate(0deg);
+    transform: translate(var(--stack-x), var(--stack-y)) rotateY(180deg) rotate(var(--stack-tilt));
   }
+}
+
+@keyframes chosenCardSuspense {
+  0%,
+  100% {
+    transform: translate(var(--stack-x), var(--stack-y)) rotateY(180deg) rotate(-1deg);
+  }
+
+  50% {
+    transform: translate(calc(var(--stack-x) + 0.16rem), calc(var(--stack-y) - 0.1rem)) rotateY(180deg) rotate(1deg);
+  }
+}
+
+.scene.show-return-sign .walking-beba {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.return-show-sign {
+  position: absolute;
+  left: 18%;
+  bottom: calc(var(--tent-ground-line) + 1.2rem);
+  z-index: 4;
+  width: min(12rem, 36vw);
+  padding: 0.85rem 0.7rem;
+  color: #fff4c7;
+  background: #7a3e20;
+  border: 0.25rem solid #d69b4a;
+  border-radius: 0.35rem;
+  box-shadow:
+    0 0.38rem 0 #3c2114,
+    0 0.8rem 1rem rgba(0, 0, 0, 0.3);
+  font: 900 clamp(0.85rem, 2.2vw, 1.1rem)/1.25 "Poppins", sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(1rem) rotate(-2deg) scale(0.9);
+  transition: opacity 600ms ease 700ms, transform 700ms ease 700ms, filter 180ms ease;
+}
+
+.return-show-sign::after {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 0.55rem;
+  height: 2.8rem;
+  content: "";
+  background: #4b2819;
+  transform: translateX(-50%);
+}
+
+.scene.show-return-sign .return-show-sign {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) rotate(-2deg) scale(1);
+}
+
+.return-show-sign:hover,
+.return-show-sign:focus-visible {
+  filter: brightness(1.12);
+}
+
+.door:disabled {
+  cursor: not-allowed;
+  filter: brightness(0.72);
+}
+
+.door:disabled:hover {
+  box-shadow: inset 0 1.2rem 2rem rgba(0, 0, 0, 0.32);
 }
 
 @keyframes sweepLeft {
   0% {
     transform: translateX(-50%) rotate(-21deg);
   }
+
   50% {
     transform: translateX(-50%) rotate(-13deg);
   }
+
   100% {
     transform: translateX(-50%) rotate(-18deg);
   }
@@ -1975,9 +2431,11 @@ h1 {
   0% {
     transform: translateX(-50%) rotate(21deg);
   }
+
   50% {
     transform: translateX(-50%) rotate(13deg);
   }
+
   100% {
     transform: translateX(-50%) rotate(18deg);
   }
@@ -1988,6 +2446,7 @@ h1 {
     opacity: 0.62;
     transform: scale(0.86);
   }
+
   to {
     opacity: 1;
     transform: scale(1.08);
@@ -1995,10 +2454,12 @@ h1 {
 }
 
 @keyframes caretBlink {
+
   0%,
   49% {
     opacity: 1;
   }
+
   50%,
   100% {
     opacity: 0;
@@ -2009,6 +2470,7 @@ h1 {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(180deg);
   }
@@ -2025,6 +2487,7 @@ h1 {
     opacity: 1;
     transform: translate3d(0, 0, 0) rotate(0);
   }
+
   100% {
     opacity: 0;
     transform: translate3d(var(--drift), 105vh, 0) rotate(680deg);
@@ -2049,6 +2512,7 @@ h1 {
 
   .beba-stage {
     justify-self: center;
+    transform: none;
   }
 
   .beba-image {
@@ -2057,17 +2521,28 @@ h1 {
 
   .story-copy {
     justify-items: center;
+    transform: translateY(-1rem);
   }
 
   .magic-act {
     grid-template-columns: 1fr;
-    width: min(88vw, 30rem);
+    width: min(92vw, 34rem);
     margin-bottom: clamp(10rem, 27vh, 14rem);
     text-align: center;
   }
 
   .stage-beba {
-    width: min(100%, 12rem);
+    width: min(100%, 20rem);
+    max-height: 40vh;
+    justify-self: center;
+  }
+
+  .magic-dialog {
+    max-width: min(92vw, 31rem);
+    justify-self: center;
+  }
+
+  .scene.magic-thinking .magic-dialog {
     justify-self: center;
   }
 
@@ -2123,19 +2598,20 @@ h1 {
   }
 
   .balloons i {
-    top: 12%;
+    top: 28%;
   }
 
   .balloons i:first-child {
-    left: 5%;
+    left: 0;
   }
 
   .balloons i:last-child {
-    right: 5%;
+    right: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -2145,7 +2621,7 @@ h1 {
     transition-duration: 1ms !important;
   }
 
-  .loader.is-done + .scene .walking-beba {
+  .loader.is-done+.scene .walking-beba {
     left: calc(50% - 2.4rem);
     opacity: 1;
   }
