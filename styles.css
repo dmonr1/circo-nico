@@ -2660,7 +2660,7 @@ h1 {
 
   .tent-top::before,
   .tent-top::after {
-    top: 3.1rem;
+    top: 3.4rem;
     border-right: 2rem solid transparent;
     border-bottom: 4.7rem solid var(--cream);
     border-left: 2rem solid transparent;
