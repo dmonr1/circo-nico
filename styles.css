@@ -726,6 +726,7 @@ button {
 
 .prize-button {
   display: none;
+  position: static;
   width: max-content;
   max-width: 100%;
   margin: 1rem auto 0;
@@ -743,7 +744,7 @@ button {
   transition: opacity 420ms ease, transform 420ms ease, filter 180ms ease;
 }
 
-.scene.prize-ready .prize-button {
+.scene.number-ready .prize-button {
   display: block;
   pointer-events: auto;
   animation: prizeButtonReveal 420ms ease forwards;
@@ -752,6 +753,41 @@ button {
 .prize-button:hover,
 .prize-button:focus-visible {
   filter: brightness(1.14);
+  transform: translateY(-0.12rem);
+}
+
+.number-step-button {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(5.6rem, 15vh, 8.6rem);
+  z-index: 10001;
+  display: none;
+  width: clamp(4.8rem, 12vw, 6.2rem);
+  min-width: 0;
+  aspect-ratio: 1;
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  color: #fff4c7;
+  background: #a31b35;
+  border: 0.16rem solid #f45b2c;
+  border-radius: 50%;
+  box-shadow: 0 0.28rem 0 #5f1227;
+  font: 900 clamp(1.05rem, 2.8vw, 1.35rem)/1 "Poppins", sans-serif;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.scene.number-step-ready .number-step-button {
+  display: grid;
+  pointer-events: auto;
+  animation: numberStepButtonReveal 420ms ease forwards;
+}
+
+.scene.number-step-ready .number-step-button:hover,
+.scene.number-step-ready .number-step-button:focus-visible {
+  filter: brightness(1.14);
+  transform: translateX(-50%) translateY(-0.12rem);
 }
 
 .magic-dialog::before {
@@ -973,7 +1009,7 @@ button {
 .card-result {
   position: absolute;
   left: 50%;
-  bottom: clamp(1.1rem, 3vh, 2rem);
+  bottom: clamp(7.2rem, 18vh, 10.4rem);
   z-index: 5;
   width: min(86vw, 36rem);
   margin: 0;
@@ -991,6 +1027,44 @@ button {
 .card-result.is-visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+.card-result.number-result {
+  display: grid;
+  gap: 0.2rem;
+  place-items: center;
+  width: max-content;
+  max-width: min(86vw, 28rem);
+  padding: 0.9rem 1.55rem 1rem;
+  color: #3c1712;
+  background:
+    radial-gradient(circle at 0 50%, transparent 0 0.72rem, #fff4c7 0.77rem),
+    radial-gradient(circle at 100% 50%, transparent 0 0.72rem, #fff4c7 0.77rem),
+    linear-gradient(135deg, #fff4c7, #f7c65a);
+  border: 0.2rem solid #f45b2c;
+  border-radius: 0.45rem;
+  box-shadow:
+    0 0.48rem 0 #7f1532,
+    0 1rem 1.3rem rgba(0, 0, 0, 0.34),
+    0 0 1.8rem rgba(247, 198, 90, 0.38);
+  text-shadow: none;
+  animation: numberResultPop 760ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.card-result.number-result span {
+  font-size: clamp(0.9rem, 2.3vw, 1.15rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.card-result.number-result strong {
+  display: block;
+  color: #b91f42;
+  font-size: clamp(3.2rem, 10vw, 5.6rem);
+  line-height: 0.86;
+  text-shadow:
+    0.08rem 0.08rem 0 #fff3d3,
+    0 0.35rem 0.8rem rgba(127, 21, 50, 0.26);
 }
 
 .prize-ticket {
@@ -2162,6 +2236,19 @@ h1 {
   animation: fall 1.9s linear forwards;
 }
 
+.magic-confetti {
+  position: fixed;
+  left: var(--burst-x);
+  top: var(--burst-y);
+  z-index: 12;
+  width: 0.65rem;
+  height: 0.95rem;
+  border-radius: 0.12rem;
+  background: var(--burst-color);
+  pointer-events: none;
+  animation: magicConfettiBurst 1.25s cubic-bezier(0.16, 0.9, 0.28, 1) forwards;
+}
+
 @keyframes shimmer {
   from {
     opacity: 0.16;
@@ -2197,6 +2284,54 @@ h1 {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes numberStepButtonReveal {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0.45rem) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes numberResultPop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0.8rem) scale(0.78) rotate(-2deg);
+  }
+
+  62% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-0.15rem) scale(1.08) rotate(1deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes magicConfettiBurst {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+
+  72% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate3d(var(--burst-dx), var(--burst-dy), 0)
+      rotate(var(--burst-rotate))
+      scale(0.82);
   }
 }
 
@@ -2568,8 +2703,9 @@ h1 {
   }
 
   .magic-dialog {
-    max-width: min(92vw, 31rem);
+    max-width: min(80vw, 31rem);
     justify-self: center;
+    margin-left: 0;
   }
 
   .scene.magic-thinking .magic-dialog {
@@ -2590,41 +2726,88 @@ h1 {
     width: min(96vw, 34rem);
   }
 
-  .ticket-stage {
-    width: min(94vw, 31rem);
+  .prize-ticket {
+    padding: 0.55rem;
   }
 
-  .ticket {
-    min-height: 34rem;
+  .prize-ticket .ticket {
+    width: min(96vw, 32rem);
+    min-height: clamp(11.8rem, 52vw, 16rem);
   }
 
   .ticket-face {
-    grid-template-columns: 1fr;
-    grid-template-rows: 7rem 1fr;
+    grid-template-columns: clamp(4.6rem, 20vw, 6.4rem) 1fr;
   }
 
-  .ticket-back {
-    grid-template-rows: none;
+  .ticket-face::before,
+  .ticket-face::after {
+    width: clamp(2rem, 8vw, 2.7rem);
+  }
+
+  .ticket-face::before {
+    left: clamp(-1.35rem, -4vw, -1rem);
+  }
+
+  .ticket-face::after {
+    right: clamp(-1.35rem, -4vw, -1rem);
+  }
+
+  .admit {
+    padding: 0.62rem 0.35rem;
   }
 
   .admit strong {
-    writing-mode: horizontal-tb;
-    transform: none;
+    font-size: clamp(1.35rem, 7vw, 2.25rem);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .admit small {
+    max-width: 4.2rem;
+    font-size: clamp(0.42rem, 1.8vw, 0.55rem);
+    letter-spacing: 0.04em;
   }
 
   .admit::after {
-    top: auto;
-    right: 1rem;
-    bottom: -0.15rem;
-    left: 1rem;
-    width: auto;
-    height: 0.18rem;
-    background-image: linear-gradient(90deg, #fff4c7 55%, transparent 0);
-    background-size: 0.7rem 100%;
+    top: 0.7rem;
+    right: -0.13rem;
+    bottom: 0.7rem;
+    left: auto;
+    width: 0.16rem;
+    height: auto;
+    background-image: linear-gradient(#fff4c7 55%, transparent 0);
+    background-size: 100% 0.62rem;
   }
 
   .ticket-main {
-    margin: 0.8rem;
+    margin: clamp(0.38rem, 1.8vw, 0.62rem);
+    padding: clamp(0.52rem, 2.2vw, 0.85rem);
+    border-width: clamp(0.38rem, 1.8vw, 0.65rem);
+  }
+
+  .stars-row {
+    font-size: clamp(0.55rem, 2.8vw, 0.82rem);
+  }
+
+  .show-name,
+  .ticket-line {
+    font-size: clamp(0.52rem, 2.6vw, 0.78rem);
+    letter-spacing: 0.04em;
+  }
+
+  .circus-word {
+    font-size: clamp(2.35rem, 14vw, 4.3rem);
+  }
+
+  .ticket-actions {
+    gap: 0.38rem;
+  }
+
+  .accept-ticket-button,
+  .decline-ticket-button {
+    min-width: 4.4rem;
+    padding: 0.42rem 0.72rem;
+    font-size: 0.82rem;
   }
 
   .balloons i {
@@ -2667,7 +2850,7 @@ h1 {
   }
 
   .string-lights {
-    top: 6.1rem;
+    top: 7.1rem;
   }
 
   .door {
@@ -2677,6 +2860,13 @@ h1 {
 
   .tent-body {
     height: 11rem;
+  }
+
+  .arrival-dialog {
+    left: calc(100% + -0.25rem);
+    bottom: 72%;
+    max-width: min(13rem, 30vw);
+    font: 900 clamp(0.68rem, 1.8vw, 1rem) / 1.2 "Poppins", sans-serif;
   }
 
 }

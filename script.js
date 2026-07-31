@@ -16,6 +16,7 @@ const magicDialogText = document.querySelector("#magicDialogText");
 const magicCards = document.querySelectorAll(".magic-card");
 const cardResult = document.querySelector("#cardResult");
 const prizeButton = document.querySelector("#prizeButton");
+const numberStepButton = document.querySelector("#numberStepButton");
 const acceptTicketButton = document.querySelector("#acceptTicketButton");
 const declineTicketButton = document.querySelector("#declineTicketButton");
 const farewellConfetti = document.querySelector("#farewellConfetti");
@@ -24,9 +25,12 @@ let bebaReachedDoor = false;
 let hasEnteredTent = false;
 let magicDialogStarted = false;
 let cardWasPicked = false;
+let numberTrickReady = false;
+let numberStepIndex = 0;
 let magicTypingTimer = 0;
 let magicDialogSequenceTimer = 0;
 let cardTrickTimers = [];
+let numberTrickTimers = [];
 let tentVisits = 0;
 
 function createPresentationConfetti() {
@@ -53,6 +57,27 @@ function createFarewellConfetti() {
     piece.style.setProperty("--farewell-drift", `${-5 + Math.random() * 10}rem`);
     piece.style.setProperty("--farewell-color", colors[index % colors.length]);
     farewellConfetti.appendChild(piece);
+  }
+}
+
+function burstMagicConfetti(x = window.innerWidth / 2, y = window.innerHeight / 2) {
+  const colors = ["#f7c65a", "#f45b2c", "#1fb6a6", "#fff3d3", "#1fb6a6", "#b91f42"];
+
+  for (let index = 0; index < 34; index += 1) {
+    const piece = document.createElement("i");
+    const angle = (Math.PI * 2 * index) / 34 + Math.random() * 0.35;
+    const distance = 3.8 + Math.random() * 5.5;
+
+    piece.className = "magic-confetti";
+    piece.style.setProperty("--burst-x", `${x}px`);
+    piece.style.setProperty("--burst-y", `${y}px`);
+    piece.style.setProperty("--burst-dx", `${Math.cos(angle) * distance}rem`);
+    piece.style.setProperty("--burst-dy", `${Math.sin(angle) * distance}rem`);
+    piece.style.setProperty("--burst-rotate", `${240 + Math.random() * 620}deg`);
+    piece.style.setProperty("--burst-color", colors[index % colors.length]);
+
+    document.body.appendChild(piece);
+    piece.addEventListener("animationend", () => piece.remove());
   }
 }
 
@@ -159,6 +184,64 @@ function typeMagicText(text, onComplete) {
   magicTypingTimer = window.setTimeout(typeNextCharacter, 900);
 }
 
+function hidePrizeTicket() {
+  scene.classList.remove("show-prize-ticket", "farewell-active");
+}
+
+function startNumberTrick() {
+  scene.classList.add("number-trick-active");
+  scene.classList.remove("magic-dialog-complete", "number-ready", "number-step-ready");
+  hidePrizeTicket();
+  cardResult.classList.remove("is-visible");
+  cardResult.classList.remove("number-result");
+  stageBeba.src = "imgs/beba_haceindo_un_truco.png";
+  stageBeba.alt = "Beba haciendo un truco de numeros";
+
+  numberStepIndex = 0;
+  showNumberStep();
+}
+
+function showNumberStep() {
+  const numberSteps = [
+    "Ahora va mi segundo truco.",
+    "Piensa un numero del 1 al 10.",
+    "Multiplicalo por 2.",
+    "Sumale 8.",
+    "Divide el resultado entre 2.",
+    "Ahora resta el numero que pensaste al inicio."
+  ];
+
+  scene.classList.remove("number-step-ready");
+  numberStepButton.textContent = "OK";
+
+  typeMagicText(numberSteps[numberStepIndex], () => {
+    scene.classList.add("number-step-ready");
+  });
+}
+
+function continueNumberTrick() {
+  if (!scene.classList.contains("number-step-ready")) {
+    return;
+  }
+
+  scene.classList.remove("number-step-ready");
+  numberStepIndex += 1;
+
+  if (numberStepIndex < 6) {
+    showNumberStep();
+    return;
+  }
+
+  cardResult.innerHTML = "<span>Tu numero es</span><strong>4</strong>";
+  cardResult.classList.add("is-visible", "number-result");
+  burstMagicConfetti(window.innerWidth / 2, window.innerHeight * 0.72);
+  typeMagicText("Si adivine tu numero, acepta el premio.", () => {
+    numberTrickReady = true;
+    prizeButton.textContent = "Ver premio";
+    scene.classList.add("number-ready");
+  });
+}
+
 function runLoader() {
   let progress = 1;
 
@@ -192,6 +275,7 @@ function enterTent(isReturning = false) {
     return;
   }
 
+  hidePrizeTicket();
   hasEnteredTent = true;
   tentVisits += 1;
   scene.classList.remove("show-return-sign");
@@ -239,31 +323,24 @@ function pickMagicCard(card) {
     magicCard.disabled = true;
   });
 
-  cardResult.textContent = "Memoriza tu carta...";
-  cardResult.classList.add("is-visible");
-
   cardTrickTimers.push(window.setTimeout(() => {
     scene.classList.add("cards-hidden");
     magicDialogText.textContent = "Guau guau...";
-    cardResult.textContent = "Las cartas se voltean...";
   }, 800));
 
   cardTrickTimers.push(window.setTimeout(() => {
     scene.classList.add("cards-stacked");
     magicDialogText.textContent = "...";
-    cardResult.textContent = "Ahora se juntan en un solo mazo...";
   }, 1550));
 
   cardTrickTimers.push(window.setTimeout(() => {
     scene.classList.add("cards-mixing");
     scene.classList.add("magic-thinking");
     magicDialogText.textContent = "Pensando...";
-    cardResult.textContent = "Y se barajan con la magia de la carpa...";
   }, 2600));
 
   cardTrickTimers.push(window.setTimeout(() => {
     scene.classList.remove("cards-mixing");
-    cardResult.classList.remove("is-visible");
   }, 5100));
 
   cardTrickTimers.push(window.setTimeout(() => {
@@ -291,16 +368,13 @@ function revealMagicCard(card) {
     scene.classList.remove("magic-thinking");
     scene.classList.add("cards-revealed");
     card.classList.add("is-revealed");
-    cardResult.textContent = `Tu carta era: ${card.dataset.card}.`;
-    cardResult.classList.add("is-visible");
+    const cardBounds = card.getBoundingClientRect();
+    burstMagicConfetti(cardBounds.left + cardBounds.width / 2, cardBounds.top + cardBounds.height / 2);
     magicDialogText.textContent = "¡La encontré!";
   }, 140));
 
   cardTrickTimers.push(window.setTimeout(() => {
-    cardResult.classList.remove("is-visible");
-    typeMagicText(`Guau guau, adiviné tu carta. Como ganaste, tengo un premio para ti.`, () => {
-      scene.classList.add("prize-ready");
-    });
+    typeMagicText(`Guau guau, adivine tu carta. Pero antes del premio falta un ultimo truco.`, startNumberTrick);
   }, 2800));
 }
 
@@ -316,7 +390,19 @@ magicCards.forEach((card) => {
     pickMagicCard(card);
   });
 });
+numberStepButton.addEventListener("click", () => {
+  if (scene.classList.contains("number-step-ready")) {
+    continueNumberTrick();
+  }
+});
+
 prizeButton.addEventListener("click", () => {
+  if (!numberTrickReady || !scene.classList.contains("number-ready")) {
+    return;
+  }
+
+  numberTrickReady = false;
+  scene.classList.remove("number-ready", "number-step-ready", "prize-ready");
   scene.classList.add("show-prize-ticket");
 });
 acceptTicketButton.addEventListener("click", () => {
@@ -345,6 +431,19 @@ continueButton.addEventListener("click", () => {
 });
 skipSceneButton.addEventListener("click", () => {
   loader.classList.add("is-done", "text-complete");
+
+  if (hasEnteredTent) {
+    scene.classList.add("show-prize-ticket");
+    return;
+  }
+
+  bebaReachedDoor = true;
+  hasEnteredTent = true;
+  tentVisits += 1;
+  enterTentButton.disabled = false;
+  enterTentButton.classList.add("is-opening");
+  scene.classList.remove("show-return-sign");
+  scene.classList.add("beba-arrived", "beba-entering", "is-entering-tent", "is-inside-tent", "show-prize-ticket");
 });
 walkingBeba.addEventListener("animationend", (event) => {
   if (event.animationName !== "bebaWalkToDoor") {
@@ -366,15 +465,21 @@ window.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && hasEnteredTent) {
     enterTentButton.classList.remove("is-opening");
     scene.classList.remove("beba-entering", "is-entering-tent", "is-inside-tent", "magic-dialog-complete");
-    scene.classList.remove("cards-hidden", "cards-stacked", "cards-mixing", "cards-revealed", "cards-suspense", "magic-thinking", "prize-ready", "show-prize-ticket", "farewell-active");
+    scene.classList.remove("cards-hidden", "cards-stacked", "cards-mixing", "cards-revealed", "cards-suspense", "magic-thinking", "number-trick-active", "number-step-ready", "number-ready", "prize-ready", "show-prize-ticket", "farewell-active");
     hasEnteredTent = false;
     bebaReachedDoor = false;
     enterTentButton.disabled = true;
     scene.classList.add("show-return-sign");
     magicDialogStarted = false;
     cardWasPicked = false;
+    numberTrickReady = false;
+    numberStepIndex = 0;
+    prizeButton.textContent = "Ver mi premio";
+    numberStepButton.textContent = "OK";
     cardTrickTimers.forEach((timer) => window.clearTimeout(timer));
     cardTrickTimers = [];
+    numberTrickTimers.forEach((timer) => window.clearTimeout(timer));
+    numberTrickTimers = [];
     window.clearTimeout(magicTypingTimer);
     window.clearTimeout(magicDialogSequenceTimer);
     magicDialogText.textContent = "";
@@ -382,7 +487,7 @@ window.addEventListener("keydown", (event) => {
     stageBeba.alt = "Beba mirando al lado";
     stageBeba.classList.remove("is-changing");
     cardResult.textContent = "";
-    cardResult.classList.remove("is-visible");
+    cardResult.classList.remove("is-visible", "number-result");
     declineTicketButton.textContent = "No";
     magicCards.forEach((card) => {
       card.disabled = false;
