@@ -2651,16 +2651,16 @@ h1 {
   }
 
   .tent-top::before {
-    left: -6.6rem;
+    left: -6.8rem;
   }
 
   .tent-top::after {
-    left: 2.5rem;
+    left: 2.8rem;
   }
 
   .tent-top::before,
   .tent-top::after {
-    top: 2.1rem;
+    top: 3.1rem;
     border-right: 2rem solid transparent;
     border-bottom: 4.7rem solid var(--cream);
     border-left: 2rem solid transparent;
