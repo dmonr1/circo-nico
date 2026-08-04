@@ -8,7 +8,6 @@ const loaderNumber = document.querySelector("#loaderNumber");
 const presentationConfetti = document.querySelector("#presentationConfetti");
 const storyText = document.querySelector("#storyText");
 const continueButton = document.querySelector("#continueButton");
-const skipSceneButton = document.querySelector("#skipSceneButton");
 const walkingBeba = document.querySelector(".walking-beba");
 const walkingBebaImage = walkingBeba.querySelector("img");
 const stageBeba = document.querySelector(".stage-beba");
@@ -428,22 +427,6 @@ toggleSkyButton.addEventListener("click", () => {
 });
 continueButton.addEventListener("click", () => {
   loader.classList.add("is-done");
-});
-skipSceneButton.addEventListener("click", () => {
-  loader.classList.add("is-done", "text-complete");
-
-  if (hasEnteredTent) {
-    scene.classList.add("show-prize-ticket");
-    return;
-  }
-
-  bebaReachedDoor = true;
-  hasEnteredTent = true;
-  tentVisits += 1;
-  enterTentButton.disabled = false;
-  enterTentButton.classList.add("is-opening");
-  scene.classList.remove("show-return-sign");
-  scene.classList.add("beba-arrived", "beba-entering", "is-entering-tent", "is-inside-tent", "show-prize-ticket");
 });
 walkingBeba.addEventListener("animationend", (event) => {
   if (event.animationName !== "bebaWalkToDoor") {

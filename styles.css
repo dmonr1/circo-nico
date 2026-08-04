@@ -118,38 +118,6 @@ button {
   font: inherit;
 }
 
-.skip-scene-button {
-  position: fixed;
-  top: clamp(1rem, 3vw, 2rem);
-  right: clamp(1rem, 3vw, 2rem);
-  z-index: 10000;
-  min-height: 3rem;
-  padding: 0.75rem 1.05rem;
-  color: #401022;
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.9rem, 2vw, 1rem);
-  font-weight: 800;
-  background:
-    radial-gradient(circle at 0 50%, transparent 0 0.62rem, #fff4c7 0.67rem),
-    radial-gradient(circle at 100% 50%, transparent 0 0.62rem, #fff4c7 0.67rem),
-    linear-gradient(135deg, #fff4c7, #f7c65a);
-  border: 0.18rem solid #0d98a6;
-  border-radius: 0.38rem;
-  box-shadow:
-    0 0.42rem 0 #b93621,
-    0 0.9rem 1.3rem rgba(0, 0, 0, 0.28);
-  pointer-events: auto;
-  transition:
-    filter 180ms ease,
-    transform 180ms ease;
-}
-
-.skip-scene-button:hover,
-.skip-scene-button:focus-visible {
-  filter: brightness(1.06);
-  transform: translateY(-0.12rem);
-}
-
 .loader-story {
   position: absolute;
   z-index: 3;
